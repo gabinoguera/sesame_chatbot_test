@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+langchain
+langchain-openai
+langchain-community
+langchain-core
+openai
+python-dotenv
+pydantic
+langchain-text-splitters
+pydantic-settings 
