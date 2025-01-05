@@ -10,14 +10,6 @@ API simple de chat que utiliza FastAPI y LangChain para interactuar con el model
 - Dockerizado para fácil despliegue
 - Endpoints de health check y documentación automática
 
-## Estructura del Proyecto
-├── main.py # Código principal de la aplicación
-├── requirements.txt # Dependencias del proyecto
-├── Dockerfile # Configuración de Docker
-├── docker-compose.yml # Configuración de Docker Compose
-├── .env # Variables de entorno (no incluido en git)
-└── README.md # Esta documentación
-
 ## Requisitos Previos
 
 - Python 3.11+
@@ -85,5 +77,5 @@ curl -X POST http://localhost:8000/chat -H "Content-Type: application/json" -d '
 % curl -X POST http://localhost:8000/chat \ 
   -H "Content-Type: application/json" \
   -d '{"user_message": "De que estamos hablando?"}'
-  
+
 {"assistant_message":"Estamos hablando de las capitales de diferentes países, en este caso de Francia y Argentina."}%  
