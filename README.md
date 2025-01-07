@@ -7,8 +7,11 @@ API simple de chat que utiliza FastAPI y LangChain para interactuar con el model
 - FastAPI como framework web
 - Integración con OpenAI a través de LangChain
 - Historial de conversación en memoria
+- Streaming de respuestas en tiempo real
+- Interfaz de usuario con Streamlit
 - Dockerizado para fácil despliegue
-- Endpoints de health check y documentación automática
+- Endpoints de health check
+- Pruebas unitarias con pytest
 
 ## Requisitos Previos
 
@@ -18,19 +21,40 @@ API simple de chat que utiliza FastAPI y LangChain para interactuar con el model
 
 ## Configuración
 
-1. Clona el repositorio:
-2. Crea un archivo `.env` en la raíz del proyecto:
-3. Agrega tu clave API de OpenAI en el archivo `.env`: OPENAI_API_KEY=your_openai_api_key
-4. Instala las dependencias: pip install -r requirements.txt
-5. Inicia el servidor: uvicorn main:app --reload
-6. a. Construye y ejecuta con docker-compose: docker-compose up --build
-   b. Alternativamente, construye y ejecuta con docker:
+1. Clona el repositorio
+2. Crea un archivo `.env` en la raíz del proyecto
+3. Agrega tu clave API de OpenAI en el archivo `.env`: 
+   ```
+   OPENAI_API_KEY=your_openai_api_key
+   ```
+4. Instala las dependencias: 
+   ```
+   pip install -r requirements.txt
+   ```
 
-        ```
-        docker build -t chatbot-api .
-        docker run -d -p 8000:8000 chatbot-api
-        ``` 
+## Ejecución
 
+### Modo Desarrollo
+1. Inicia el servidor FastAPI:
+   ```
+   uvicorn app.main:app --reload
+   ```
+2. En otra terminal, inicia la interfaz Streamlit:
+   ```
+   streamlit run app/streamlit_app.py
+   ```
+
+### Modo Docker
+```bash
+# Opción 1: Con watch mode (recomendado para desarrollo)
+docker compose watch
+
+# Opción 2: Modo normal con watch
+docker compose up --watch
+
+# Opción 3: Modo detached (background)
+docker compose up -d
+```
 
 ## Uso de la API
 
@@ -39,20 +63,37 @@ API simple de chat que utiliza FastAPI y LangChain para interactuar con el model
 - `GET /`: Página de bienvenida con información de la API
 - `GET /health`: Verificación del estado de la API
 - `POST /chat`: Endpoint principal para interactuar con el chatbot
+- `POST /chat/stream`: Endpoint para respuestas en streaming
 
-### Instrucciones de uso
+### Interfaz de Usuario
+
+1. Accede a la interfaz web:
+   ```
+   http://localhost:8501
+   ```
+2. Escribe tu mensaje en el campo de texto
+3. La respuesta se mostrará en tiempo real, palabra por palabra
+
+### API REST
 
 1. Verificar el estado de la API:
-
-```
-curl -X GET http://localhost:8000/health
-```
+   ```
+   curl -X GET http://localhost:8000/health
+   ```
 
 2. Interactuar con el chatbot:
+   ```
+   curl -X POST http://localhost:8000/chat \
+        -H "Content-Type: application/json" \
+        -d '{"user_message": "Hola, ¿cómo estás?"}'
+   ```
 
-```
-curl -X POST http://localhost:8000/chat -H "Content-Type: application/json" -d '{"message": "Hola, ¿cómo estás?"}'
-```
+3. Usar el endpoint de streaming:
+   ```
+   curl -X POST http://localhost:8000/chat/stream \
+        -H "Content-Type: application/json" \
+        -d '{"user_message": "Cuéntame una historia"}'
+   ```
 
 ### Ejemplos de uso
 
