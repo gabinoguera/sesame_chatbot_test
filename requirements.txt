@@ -9,3 +9,7 @@ python-dotenv
 pydantic
 langchain-text-splitters
 pydantic-settings 
+pytest
+httpx
+pytest-cov 
+pytest-asyncio
